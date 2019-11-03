@@ -36,18 +36,6 @@ int main()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	//setup vertex buffer
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleA), triangleA, GL_STATIC_DRAW);
-
-	// binding buffer to array
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), nullptr);
-	glEnableVertexAttribArray(0);
-
-	//OPT: unbinding buffer and array obj
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 
 
 
@@ -66,8 +54,7 @@ int main()
 
 		programID = loadProgram(vsSource, fsSource);
 		glUseProgram(programID);
-		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES,0, 3);
+		
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
