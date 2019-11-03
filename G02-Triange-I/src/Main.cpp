@@ -25,16 +25,68 @@ int main()
 	// setup window
 	GLFWwindow* window = initWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL - Triangle");
 
-	float triangleA[] = {
-		0.34, 0.6, 0.0,
-	   -0.45, -0.23, 0.0,
-	    0.8, -0.5, 0.0
+	float triangle1[] = {
+		-0.5, 0.8, 0.0,
+	   -0.3, 0.1, 0.0,
+	    -0.7, 0.22, 0.0
+	};
+
+	float triangle2[] = {
+		0.5, 0.8, 0.0,
+		0.9, 0.2, 0.0,
+		0.2, 0.2, 0.0
+	};
+
+	float triangle3[] = {
+		0.5, -0.1, 0.0,
+		0.9, -0.9, 0.0,
+		0.2, -0.85, 0.0
+	};
+
+	float triangle4[] = {
+		-0.5, -0.1, 0.0,
+		-0.3, -0.85, 0.0,
+		-0.7, -0.85, 0.0
 	};
 	
-	GLuint vao, vbo;
+	
+	GLuint vao[4], vbo[4];
+
 	//setup vertex array
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glGenBuffers(4, vbo);
+	glGenVertexArrays(4, vao);
+
+	// setup triangle 1
+	
+	glBindVertexArray(vao[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle1), triangle1, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(vao[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle2), triangle2, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(vao[2]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle3), triangle3, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(vao[3]);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[3]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle4), triangle4, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(0);
+
+	// unbind data
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	
 
 
 
@@ -54,6 +106,18 @@ int main()
 
 		programID = loadProgram(vsSource, fsSource);
 		glUseProgram(programID);
+
+		glBindVertexArray(vao[0]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glBindVertexArray(vao[1]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glBindVertexArray(vao[2]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glBindVertexArray(vao[3]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -64,8 +128,8 @@ int main()
 
 	//SH08 - Delete program out of our main loop
 	glDeleteProgram(programID);
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
+	glDeleteVertexArrays(4, vao);
+	glDeleteBuffers(4, vbo);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
