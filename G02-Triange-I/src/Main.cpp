@@ -1,4 +1,6 @@
 #include "Utils.h"
+#include <chrono>
+
 
 // vertex and fragrament Shader
 const char* vsSource  = R"glsl(
@@ -26,6 +28,9 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
+	// start time
+	auto t0 = std::chrono::high_resolution_clock::now();
+
 	// setup window
 	GLFWwindow* window = initWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL - Triangle");
 
@@ -54,7 +59,7 @@ int main()
 
 	
 	GLint tUniColor = glGetUniformLocation(programID, "triangleColor");
-	glUniform3f(tUniColor, 0.0f, 1.0f, 0.0f);
+	
 
 
 	// render loop
@@ -69,9 +74,13 @@ int main()
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
+		// set the color of the triangle
+		auto t1 = std::chrono::high_resolution_clock::now();
+		float time = std::chrono::duration_cast<std::chrono::duration<float>>(t1 - t0).count();
 
-		
-		
+		glUniform3f(tUniColor, sin(time * 6.0f) , 1.0f, 0.0f);
+
 		glDrawArrays(GL_TRIANGLES,0, 3);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
