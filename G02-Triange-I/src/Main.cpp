@@ -14,6 +14,28 @@ const char* fsSource =
 	"void main() {"
 	"		frag_color = vec4(0.2f, 0.43f, 0.6f, 1.0);"
 	"}";
+
+const char* fsSource1 =
+"#version 330 core\n"
+"out vec4 frag_color;"
+"void main() {"
+"		frag_color = vec4(0.1f, 0.0f, 0.9f, 1.0);"
+"}";
+
+const char* fsSource2 =
+"#version 330 core\n"
+"out vec4 frag_color;"
+"void main() {"
+"		frag_color = vec4(0.5f, 0.2f, 0.0f, 1.0);"
+"}";
+
+const char* fsSource3 =
+"#version 330 core\n"
+"out vec4 frag_color;"
+"void main() {"
+"		frag_color = vec4(0.94f, 0.23f, 0.5f, 1.0);"
+"}";
+
 GLuint programID;
 
 // settings
@@ -106,16 +128,18 @@ int main()
 
 		programID = loadProgram(vsSource, fsSource);
 		glUseProgram(programID);
-
 		glBindVertexArray(vao[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		glUseProgram(loadProgram(vsSource, fsSource1));
 		glBindVertexArray(vao[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		glUseProgram(loadProgram(vsSource, fsSource2));
 		glBindVertexArray(vao[2]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		glUseProgram(loadProgram(vsSource, fsSource3));
 		glBindVertexArray(vao[3]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		
