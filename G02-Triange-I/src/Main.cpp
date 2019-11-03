@@ -1,19 +1,23 @@
 #include "Utils.h"
 
 // vertex and fragrament Shader
-const char* vsSource  = 
-" #version 330 core\n"
-	"layout(location = 0) in vec3 pos;"
-	"void main()"
-		"{ "
-		"    gl_Position = vec4(pos, 1.0);"
-		"}";
-const char* fsSource = 
-	"#version 330 core\n"
-	"out vec4 frag_color;"
-	"void main() {"
-	"		frag_color = vec4(0.2f, 0.43f, 0.6f, 1.0);"
-	"}";
+const char* vsSource  = R"glsl(
+    #version 330 core
+	layout (location = 0) in vec3 pos;
+	void main(){ 
+		   gl_Position = vec4(pos, 1.0);
+		}
+)glsl";
+
+const char* fsSource = R"glsl(
+	 #version 330 core
+	 
+	 uniform vec3 triangleColor;
+	 out vec4 fragColor;
+	 void main() {
+			fragColor = vec4(triangleColor, 1.0);
+	}
+)glsl";
 GLuint programID;
 
 // settings
@@ -31,24 +35,26 @@ int main()
 	    0.8, -0.5, 0.0
 	};
 	
+	// create program
+	programID = loadProgram(vsSource, fsSource);
+	glUseProgram(programID);
 	GLuint vao, vbo;
-	//setup vertex array
+	//gen buffer and vertex Array
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	//setup vertex buffer
 	glGenBuffers(1, &vbo);
+
+	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleA), triangleA, GL_STATIC_DRAW);
 
 	// binding buffer to array
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), nullptr);
-	glEnableVertexAttribArray(0);
+	GLint posAttrib = glGetAttribLocation(programID, "pos");
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), nullptr);
+	glEnableVertexAttribArray(posAttrib);
 
-	//OPT: unbinding buffer and array obj
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
+	
+	GLint tUniColor = glGetUniformLocation(programID, "triangleColor");
+	glUniform3f(tUniColor, 0.0f, 1.0f, 0.0f);
 
 
 	// render loop
@@ -64,9 +70,8 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		programID = loadProgram(vsSource, fsSource);
-		glUseProgram(programID);
-		glBindVertexArray(vao);
+		
+		
 		glDrawArrays(GL_TRIANGLES,0, 3);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
