@@ -1,40 +1,54 @@
 #include "Utils.h"
 
 // vertex and fragrament Shader
-const char* vsSource  = 
-" #version 330 core\n"
-	"layout(location = 0) in vec3 pos;"
-	"void main()"
-		"{ "
-		"    gl_Position = vec4(pos, 1.0);"
-		"}";
-const char* fsSource = 
-	"#version 330 core\n"
-	"out vec4 frag_color;"
-	"void main() {"
-	"		frag_color = vec4(0.2f, 0.43f, 0.6f, 1.0);"
-	"}";
+const char* vsSource  = R"glsl(
+    #version 330 core
+	layout(location = 0) in vec3 pos;
+	void main(){ 
+		    gl_Position = vec4(pos, 1.0);
+		}
+	)glsl";
 
-const char* fsSource1 =
-"#version 330 core\n"
-"out vec4 frag_color;"
-"void main() {"
-"		frag_color = vec4(0.1f, 0.0f, 0.9f, 1.0);"
-"}";
+const char* fsSource = R"glsl(
+	 #version 330 core
+	 out vec4 frag_color;
+	 void main() {
+			frag_color = vec4(0.2f, 0.43f, 0.6f, 1.0);
+	 }
+	)glsl";
 
-const char* fsSource2 =
-"#version 330 core\n"
-"out vec4 frag_color;"
-"void main() {"
-"		frag_color = vec4(0.5f, 0.2f, 0.0f, 1.0);"
-"}";
+const char* fsSource1 = R"glsl(
+ #version 330 core
+ out vec4 frag_color;
+ void main() {
+		frag_color = vec4(0.1f, 0.0f, 0.9f, 1.0);
+}
+)glsl";
 
-const char* fsSource3 =
-"#version 330 core\n"
-"out vec4 frag_color;"
-"void main() {"
-"		frag_color = vec4(0.94f, 0.23f, 0.5f, 1.0);"
-"}";
+const char* fsSource2 = R"glsl(
+ #version 330 core
+ out vec4 frag_color;
+void main() {
+		frag_color = vec4(0.5f, 0.2f, 0.0f, 1.0);
+}
+)glsl";
+
+const char* fsSource3 =R"glsl(
+	#version 330 core
+	out vec4 frag_color;
+	void main() {
+		frag_color = vec4(0.94f, 0.23f, 0.5f, 1.0);
+	}
+ )glsl";
+
+const char* vsSource2 = R"glsl(
+	#version 330 core
+	in vec2 pos;
+	void main(){
+		gl_Position = vec4(pos, 0.0, 1.0);
+	}
+
+)glsl";
 
 GLuint programID;
 
